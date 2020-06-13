@@ -1,0 +1,6 @@
+---
+- hosts: k8s-master
+  user: root
+  gather_facts: no
+  roles:
+  - { role: deploy-app-v2, tags: ["deploy_app_v2_role"] }

@@ -1,0 +1,3 @@
+---
+# tasks file for destroy-cluster
+- include: destruir.yml

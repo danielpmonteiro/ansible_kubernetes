@@ -1,0 +1,3 @@
+---
+# tasks file for install-monit-tools
+- include: deploy-monit-tools.yaml

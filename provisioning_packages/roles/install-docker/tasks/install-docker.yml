@@ -1,0 +1,41 @@
+---
+# Configuring the instalattion of docker
+- name: Instalando o Docker
+  shell: curl -fsSL https://get.docker.com | bash
+  notify: Restart Docker
+
+- name: Bloquear Update Automatico do Docker
+  dpkg_selections:
+    name: "{{ item }}"
+    selection: hold
+  with_items:
+      - docker-ce
+      - docker-ce-cli
+
+- name: Adicionar Usuario Root ao Grupo Docker
+  user:
+    name: root
+    group: docker
+
+- name: Desabilitar swap
+  command: swapoff -a
+
+- name: Remover swapfile do /etc/fstab
+  mount:
+    name: "{{ item }}"
+    fstype: swap
+    state: absent
+  with_items:
+    - swap
+    - none
+
+- name: Criar Arquivo Docker daemon.json
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: '0644'
+  with_items:
+    - { src: 'docker_daemon.json', dest: '/etc/docker/daemon.json' }
+  register: create_daeamon_json

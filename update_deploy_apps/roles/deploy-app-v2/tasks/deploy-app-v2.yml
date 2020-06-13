@@ -1,0 +1,39 @@
+- name: Copiando o Arquivo de Deployment da App V1
+  template:
+    src: app-v1.yml.j2
+    dest: /opt/giropops/app-v1.yml
+    owner: root
+    group: root
+    mode: 0644
+  register: copiando_deploy_app_v1
+
+- name: Copiando o Arquivo de Deployment da App V2
+  template:
+    src: app-v2.yml.j2
+    dest: /opt/giropops/app-v2.yml
+    owner: root
+    group: root
+    mode: 0644
+  register: copiando_deploy_app_v2
+
+- name: Deploy da App V2
+  k8s:
+    state: present
+    namespace: default
+    src: /opt/giropops/app-v2.yml
+
+- name: Scale Down da App V1
+  k8s:
+    state: present
+    namespace: default
+    src: /opt/giropops/app-v1.yml
+
+- name: Aguardando 2 minutos para concluir remocao da app v1.
+  pause:
+    minutes: 2
+  
+- name: Removendo a App V1
+  k8s:
+    state: absent
+    namespace: default
+    src: /opt/giropops/app-v1.yml

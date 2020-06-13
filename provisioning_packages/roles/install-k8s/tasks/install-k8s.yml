@@ -1,0 +1,39 @@
+---
+- name: Instalando Dependencias do Modulo do k8s
+  pip:
+    name:
+      - openshift
+      - PyYAML
+
+- name: Adicionando as Chaves do Repo K8s
+  apt_key:
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    state: present
+
+- name: Adicionando Repo do K8s
+  apt_repository:
+    repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
+    state: present
+    filename: kubernetes_apt
+  register: apt_kube
+
+- name: Instalando os Pacotes K8s
+  apt:
+    name: "{{ packages }}"
+    state: present
+    update_cache: yes
+  vars:
+    packages:
+      - kubelet
+      - kubeadm
+      - kubectl
+  notify: Restart Kubelet
+
+- name: Bloquear Update Automatico dos Pacotes K8s
+  dpkg_selections:
+    name: "{{ item }}"
+    selection: hold
+  with_items:
+      - kubelet
+      - kubeadm
+      - kubectl

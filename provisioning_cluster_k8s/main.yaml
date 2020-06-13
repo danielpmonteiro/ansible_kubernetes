@@ -1,0 +1,12 @@
+---
+- hosts: k8s-master
+  user: root
+  gather_facts: no
+  roles:
+  - { role: create-cluster, tags: ["create_cluster_role"] }
+
+- hosts: k8s-workers
+  user: root
+  gather_facts: no
+  roles:
+  - { role: join-workers, tags: ["join_workers_role"] }

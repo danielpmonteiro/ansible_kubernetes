@@ -1,0 +1,6 @@
+---
+# handlers file for install-k8s
+- name: Restart Kubelet
+  service:
+    name: kubelet
+    state: restarted

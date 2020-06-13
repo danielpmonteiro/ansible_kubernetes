@@ -1,0 +1,6 @@
+---
+- hosts: all
+  user: root
+  gather_facts: no
+  roles:
+  - { role: destroy-cluster, tags: ["destroy_cluster_k8s"] }

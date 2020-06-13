@@ -1,0 +1,20 @@
+---
+- hosts: all
+  user: root
+  gather_facts: no
+  pre_tasks:
+  - name: 'Atualizando o Repo'
+    raw: 'apt update'
+  - name: 'Instalando o Python'
+    raw: 'apt install -y python'
+  - name: 'Instalando o Python-PIP'
+    raw: 'apt install -y python-pip'
+  roles:
+  - { role: install-docker, tags: ["install_docker_role"] }
+  - { role: install-k8s, tags: ['install_k8s_role'] }
+
+- hosts: k8s-master
+  user: root
+  gather_facts: no
+  roles:
+  - { role: install-helm, tags: ["install_helm_role"] }
