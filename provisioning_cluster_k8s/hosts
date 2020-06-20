@@ -1,10 +1,10 @@
 [k8s-master]
-master01
+cpro43392.publiccloud.com.br
 
 [k8s-workers]
-worker01
-worker02
+cpro44194.publiccloud.com.br
+cpro44195.publiccloud.com.br
 
 [k8s-workers:vars]
-K8S_MASTER_NODE_IP=1.2.3.4
+K8S_MASTER_NODE_IP=191.252.56.7
 K8S_API_SECURE_PORT=6443
